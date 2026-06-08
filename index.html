@@ -3,311 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Market | Premium Crypto Art</title>
+    <title>NFT Market</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: system-ui, 'Segoe UI', sans-serif;
         }
-
         body {
             background: #0a0a0f;
-            color: #ffffff;
+            color: white;
         }
-
-        .app {
+        .navbar {
+            background: #111118;
+            padding: 16px 40px;
             display: flex;
-            min-height: 100vh;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a2f4a;
         }
-
-        /* Сайдбар */
-        .sidebar {
-            width: 280px;
-            background: #0f0f18;
-            border-right: 1px solid #1e1e2e;
-            padding: 40px 24px;
-            position: fixed;
-            height: 100vh;
-        }
-
         .logo {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 48px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #4a7cff;
+            margin-right: auto;
         }
-
         .nav-btn {
-            display: block;
-            width: 100%;
-            padding: 14px 20px;
-            margin-bottom: 8px;
             background: transparent;
-            border: none;
-            color: #8888aa;
-            font-size: 15px;
-            font-weight: 500;
-            text-align: left;
-            border-radius: 12px;
+            border: 1px solid #4a7cff;
+            color: #4a7cff;
+            padding: 10px 24px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.2s;
+            font-size: 14px;
         }
-
-        .nav-btn:hover {
-            background: #1a1a2e;
-            color: #ffffff;
-        }
-
         .nav-btn.active {
-            background: #00ff88;
-            color: #0a0a0f;
-            font-weight: 600;
+            background: #4a7cff;
+            color: white;
         }
-
-        /* Негізгі контент */
         .main-content {
-            flex: 1;
-            margin-left: 280px;
-            padding: 48px 56px;
+            padding: 40px;
         }
-
-        /* Беттер */
         .page {
             display: none;
         }
-
         .page.active-page {
             display: block;
         }
-
         h2 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 32px;
-            color: #ffffff;
+            color: #4a7cff;
+            margin-bottom: 24px;
         }
-
-        h2 span {
-            color: #00ff88;
-        }
-
-        /* NFT сетка */
         .nft-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
         }
-
         .nft-card {
             background: #111118;
-            border: 1px solid #1e1e2e;
-            border-radius: 20px;
+            border: 1px solid #2a2f4a;
+            border-radius: 16px;
             padding: 16px;
-            transition: all 0.3s;
         }
-
-        .nft-card:hover {
-            transform: translateY(-5px);
-            border-color: #00ff88;
-        }
-
         .card-img {
             width: 100%;
-            height: 240px;
-            border-radius: 16px;
+            height: 220px;
+            border-radius: 12px;
             background-size: cover;
             background-position: center;
-            margin-bottom: 16px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .card-creator {
-            font-size: 13px;
-            color: #666;
             margin-bottom: 12px;
         }
-
-        .card-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
         .price {
+            color: #4a7cff;
             font-size: 20px;
-            font-weight: 700;
-            color: #00ff88;
+            font-weight: bold;
         }
-
         .btn-buy {
-            background: #1a1a2e;
+            background: #2a2f4a;
             border: none;
             padding: 8px 20px;
             border-radius: 30px;
-            color: #fff;
+            color: white;
             cursor: pointer;
         }
-
-        .btn-buy:hover {
-            background: #00ff88;
-            color: #0a0a0f;
-        }
-
-        /* Формалар */
-        .form-container {
-            max-width: 500px;
-            background: #111118;
-            padding: 32px;
-            border-radius: 24px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #888;
-        }
-
         input, textarea {
             width: 100%;
-            background: #0a0a0f;
-            border: 1px solid #1e1e2e;
+            background: #111118;
+            border: 1px solid #2a2f4a;
             padding: 12px;
             border-radius: 12px;
-            color: #fff;
+            color: white;
+            margin-bottom: 16px;
         }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #00ff88;
-        }
-
         .btn-primary {
-            background: #00ff88;
+            background: #4a7cff;
             border: none;
-            padding: 12px 28px;
+            padding: 12px;
             border-radius: 30px;
-            font-weight: 600;
+            color: white;
             cursor: pointer;
             width: 100%;
         }
-
         .auth-card {
-            max-width: 450px;
+            max-width: 400px;
             margin: 0 auto;
             background: #111118;
-            padding: 48px;
-            border-radius: 28px;
-            text-align: center;
+            padding: 40px;
+            border-radius: 24px;
         }
-
         .empty-state {
             text-align: center;
             padding: 60px;
-            background: #111118;
-            border-radius: 24px;
             color: #666;
         }
     </style>
 </head>
 <body>
 
-<div class="app">
-    <aside class="sidebar">
-        <div class="logo">NFT.MARKET</div>
-        <button class="nav-btn active" onclick="showPage('nfts')">🎨 NFT's</button>
-        <button class="nav-btn" onclick="showPage('login')">🔐 Login</button>
-        <button class="nav-btn" onclick="showPage('profile')">👤 Profile</button>
-        <button class="nav-btn" onclick="showPage('my-nfts')">🖼️ My NFT's</button>
-        <button class="nav-btn" onclick="showPage('create')">✨ Create NFT</button>
-    </aside>
+<div class="navbar">
+    <div class="logo">NFT MARKET</div>
+    <button class="nav-btn active" onclick="showPage('nfts')">NFT's</button>
+    <button class="nav-btn" onclick="showPage('login')">Login</button>
+    <button class="nav-btn" onclick="showPage('profile')">Profile</button>
+    <button class="nav-btn" onclick="showPage('my-nfts')">My NFT's</button>
+    <button class="nav-btn" onclick="showPage('create')">Create NFT</button>
+</div>
 
-    <main class="main-content">
-        
-        <div id="nfts" class="page active-page">
-            <h2>NFT <span>Collections</span></h2>
-            <div class="nft-grid" id="nftGrid"></div>
+<div class="main-content">
+    <div id="nfts" class="page active-page">
+        <h2>NFT Collections</h2>
+        <div class="nft-grid" id="nftGrid"></div>
+    </div>
+
+    <div id="login" class="page">
+        <div class="auth-card">
+            <h2>Welcome Back</h2>
+            <input type="text" placeholder="Username">
+            <input type="password" placeholder="Password">
+            <button class="btn-primary">Sign In</button>
         </div>
+    </div>
 
-        <div id="login" class="page">
-            <div class="auth-card">
-                <h3>Welcome Back</h3>
-                <p style="margin-bottom: 32px; color:#666;">Sign in to your account</p>
-                <div class="form-group"><input type="text" placeholder="Username"></div>
-                <div class="form-group"><input type="password" placeholder="Password"></div>
-                <button class="btn-primary">Sign In</button>
-            </div>
+    <div id="profile" class="page">
+        <h2>Edit Profile</h2>
+        <div style="max-width: 500px;">
+            <input type="text" placeholder="Username">
+            <textarea rows="4" placeholder="Bio"></textarea>
+            <button class="btn-primary">Save Changes</button>
         </div>
+    </div>
 
-        <div id="profile" class="page">
-            <h2>Edit <span>Profile</span></h2>
-            <div class="form-container">
-                <div class="form-group"><label>Username</label><input type="text" placeholder="crypto_artist"></div>
-                <div class="form-group"><label>Bio</label><textarea rows="4" placeholder="Tell about yourself..."></textarea></div>
-                <button class="btn-primary">Save</button>
-            </div>
+    <div id="my-nfts" class="page">
+        <h2>My NFTs</h2>
+        <div class="empty-state">✨ You don't have any NFTs yet</div>
+    </div>
+
+    <div id="create" class="page">
+        <h2>Create New NFT</h2>
+        <div style="max-width: 500px;">
+            <input type="text" placeholder="NFT Name">
+            <textarea rows="4" placeholder="Description"></textarea>
+            <input type="text" placeholder="Price (USD)">
+            <button class="btn-primary">Mint NFT</button>
         </div>
-
-        <div id="my-nfts" class="page">
-            <h2>My <span>Collection</span></h2>
-            <div class="empty-state"><p>You don't have any NFTs yet</p><p style="font-size:13px;">Go to Create NFT to mint your first piece!</p></div>
-        </div>
-
-        <div id="create" class="page">
-            <h2>Create <span>New NFT</span></h2>
-            <div class="form-container">
-                <div class="form-group"><label>NFT Name</label><input type="text" placeholder="Cyber Punk #001"></div>
-                <div class="form-group"><label>Description</label><textarea rows="4" placeholder="Describe your artwork..."></textarea></div>
-                <div class="form-group"><label>Price (USD)</label><input type="text" placeholder="0.00"></div>
-                <button class="btn-primary">Mint NFT</button>
-            </div>
-        </div>
-
-    </main>
+    </div>
 </div>
 
 <script>
     const nfts = [
-        { name: "Nightmare (pt.15)", creator: "KKSpecial", price: "49.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" },
-        { name: "King Bored Ape", creator: "MorugaNFT", price: "49.99", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&h=400&fit=crop" },
-        { name: "HorseNFT #1332", creator: "User-71068", price: "49.99", img: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=400&h=400&fit=crop" },
-        { name: "USSR 2.Edition", creator: "Angelina2022", price: "49.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
-        { name: "Cosmic Dreamer", creator: "SpaceArt", price: "39.99", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&h=400&fit=crop" },
-        { name: "Neon Punk", creator: "CyberLord", price: "59.99", img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=400&fit=crop" }
+        { name: "Nightmare (pt.15)", price: "49.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" },
+        { name: "King Bored Ape", price: "49.99", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&h=400&fit=crop" },
+        { name: "HorseNFT #1332", price: "49.99", img: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=400&h=400&fit=crop" },
+        { name: "USSR 2.Edition", price: "49.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
+        { name: "Cosmic Dreamer", price: "39.99", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&h=400&fit=crop" },
+        { name: "Neon Punk", price: "59.99", img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=400&fit=crop" }
     ];
 
     function renderNFTs() {
         const grid = document.getElementById('nftGrid');
-        if (!grid) return;
-        grid.innerHTML = nfts.map(nft => `
-            <div class="nft-card">
-                <div class="card-img" style="background-image: url('${nft.img}')"></div>
-                <div class="card-title">${nft.name}</div>
-                <div class="card-creator">by ${nft.creator}</div>
-                <div class="card-bottom">
-                    <span class="price">$${nft.price}</span>
-                    <button class="btn-buy" onclick="alert('✅ Demo: NFT purchased!')">Buy</button>
+        if(grid) {
+            grid.innerHTML = nfts.map(n => `
+                <div class="nft-card">
+                    <div class="card-img" style="background-image: url('${n.img}')"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+                        <span class="price">$${n.price}</span>
+                        <button class="btn-buy" onclick="alert('✅ NFT purchased! (Demo)')">Buy</button>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `).join('');
+        }
     }
 
     function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.getElementById(pageId).classList.add('active-page');
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
     }
 
