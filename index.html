@@ -1,171 +1,342 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>NFT Market</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Market — острый стиль</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: system-ui, 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
         }
+
         body {
             background: #0b0e14;
-            color: white;
+            color: #fff;
         }
+
+        /* ВЕРХНЕЕ МЕНЮ — острые углы */
         .navbar {
             display: flex;
-            gap: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
             padding: 16px 40px;
             background: #0f121a;
-            border-bottom: 1px solid #1e2a2f;
-            flex-wrap: wrap;
+            border-bottom: 2px solid #24ffa4;
         }
+
         .logo {
             font-size: 20px;
-            font-weight: 700;
+            font-weight: 800;
             color: #24ffa4;
-            margin-right: auto;
+            margin-right: 20px;
+            letter-spacing: -0.5px;
         }
+
         .nav-btn {
             background: transparent;
             border: none;
             color: #b0b8c5;
+            font-size: 14px;
+            font-weight: 600;
             padding: 10px 20px;
-            border-radius: 40px;
             cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+
+        .nav-btn:hover {
+            background: #1e242e;
+            color: #fff;
+        }
+
         .nav-btn.active {
             background: #24ffa4;
             color: #0b0e14;
         }
+
         .main-content {
             padding: 32px 40px;
         }
+
+        /* ПОИСК — острый прямоугольник */
         .search-box {
             margin-bottom: 32px;
             max-width: 340px;
         }
+
         .search-box input {
             width: 100%;
             background: #141a24;
-            border: 1px solid #2a333d;
+            border: 2px solid #2a333d;
             padding: 12px 20px;
-            border-radius: 40px;
-            color: white;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
         }
+
+        .search-box input:focus {
+            border-color: #24ffa4;
+        }
+
+        /* СЕТКА КАРТОЧЕК */
         .nft-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 28px;
+            gap: 24px;
         }
+
+        /* КАРТОЧКА — острые углы, без скруглений */
         .nft-card {
             background: #11161f;
-            border: 1px solid #232a33;
-            border-radius: 24px;
+            border: 2px solid #232a33;
             padding: 20px;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
+
+        .nft-card:hover {
+            border-color: #24ffa4;
+            transform: translateY(-3px);
+        }
+
+        /* Верхняя строка: аватар (квадратный) + имя + лайки */
         .card-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 16px;
         }
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
+        /* АВАТАР — квадратный, острый */
         .avatar {
             width: 38px;
             height: 38px;
             background: #202731;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
             color: #24ffa4;
         }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: #eef2ff;
+        }
+
+        /* ЛАЙКИ — острый прямоугольник без скругления */
         .likes {
             color: #24ffa4;
-            background: rgba(36,255,164,0.1);
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(36, 255, 164, 0.1);
             padding: 4px 10px;
-            border-radius: 30px;
+            border: 1px solid rgba(36, 255, 164, 0.3);
         }
+
+        .likes::before {
+            content: "▼";
+            font-size: 10px;
+        }
+
+        /* ИЗОБРАЖЕНИЕ NFT — квадратное, острые углы */
         .card-img {
             width: 100%;
-            aspect-ratio: 1/1;
+            aspect-ratio: 1 / 1;
             background-size: cover;
             background-position: center;
-            border-radius: 20px;
             margin-bottom: 16px;
+            background-color: #1a212c;
+            border: 1px solid #2a333d;
         }
+
+        /* Текст COLLECTION NAME */
         .collection-label {
             font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
             color: #6b7c8f;
+            margin-bottom: 6px;
             text-transform: uppercase;
         }
+
         .nft-title {
             font-size: 18px;
             font-weight: 700;
-            margin: 6px 0 16px;
+            margin-bottom: 16px;
+            line-height: 1.3;
         }
+
+        /* Нижняя часть: цена + кнопка */
         .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #232a33;
+            margin-top: auto;
             padding-top: 12px;
+            border-top: 2px solid #232a33;
         }
+
         .price {
             font-size: 20px;
             font-weight: 800;
             color: #24ffa4;
         }
+
+        /* КНОПКА BUY — острая, без скруглений */
         .btn-buy {
             background: transparent;
-            border: 1px solid #24ffa4;
+            border: 2px solid #24ffa4;
             color: #24ffa4;
             padding: 6px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-        .page {
-            display: none;
-        }
-        .page.active-page {
-            display: block;
-        }
-        input, textarea {
-            width: 100%;
-            background: #0f131c;
-            border: 1px solid #2a333d;
-            padding: 12px;
-            border-radius: 16px;
-            color: white;
-        }
-        .btn-primary {
-            background: #24ffa4;
-            border: none;
-            padding: 12px;
-            border-radius: 40px;
             font-weight: 700;
-            width: 100%;
+            font-size: 13px;
             cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
         }
+
+        .btn-buy:hover {
+            background: #24ffa4;
+            color: #0b0e14;
+        }
+
+        /* ФОРМЫ — острые углы */
         .auth-card {
             max-width: 440px;
             margin: 40px auto;
             background: #11161f;
+            border: 2px solid #232a33;
             padding: 40px;
-            border-radius: 28px;
         }
+
+        .auth-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #24ffa4;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8e9eae;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
         .form-group {
             margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0c0d0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: #0f131c;
+            border: 2px solid #2a333d;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #24ffa4;
+        }
+
+        .btn-primary {
+            background: #24ffa4;
+            border: none;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #0b0e14;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-primary:hover {
+            background: #1de08f;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 22px;
+            color: #8e9eae;
+            font-size: 13px;
+        }
+
+        .auth-switch a {
+            color: #24ffa4;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .form-container {
+            max-width: 500px;
+            background: #11161f;
+            border: 2px solid #232a33;
+            padding: 30px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            background: #11161f;
+            border: 2px solid #232a33;
+            color: #8e9eae;
+        }
+
+        .page {
+            display: none;
+            animation: fade 0.2s ease;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 700px) {
+            .navbar { padding: 12px 20px; }
+            .nav-btn { padding: 6px 12px; font-size: 12px; }
+            .main-content { padding: 20px; }
         }
     </style>
 </head>
 <body>
+
 <div class="navbar">
     <div class="logo">NFT MARKET</div>
     <button class="nav-btn active" onclick="showPage('nfts')">NFT's</button>
@@ -174,86 +345,117 @@
     <button class="nav-btn" onclick="showPage('my-nfts')">My NFT's</button>
     <button class="nav-btn" onclick="showPage('create')">Create nft</button>
 </div>
+
 <div class="main-content">
+    <!-- ГЛАВНАЯ СТРАНИЦА NFT -->
     <div id="nfts" class="page active-page">
-        <div class="search-box"><input type="text" id="searchInput" placeholder="Search"></div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search">
+        </div>
         <div class="nft-grid" id="nftGrid"></div>
     </div>
+
+    <!-- ЛОГИН / РЕГИСТРАЦИЯ -->
     <div id="login" class="page">
         <div class="auth-card">
             <div id="loginForm">
-                <h3 style="color:#24ffa4">Войти в аккаунт</h3>
-                <div class="form-group"><label>Имя пользователя</label><input type="text" id="loginName"></div>
-                <div class="form-group"><label>Пароль</label><input type="password" id="loginPassword"></div>
+                <h3>Войти в аккаунт</h3>
+                <div class="subtitle">Добро пожаловать обратно на NFTMarket</div>
+                <div class="form-group"><label>Имя пользователя</label><input type="text" id="loginName" placeholder="Введите имя..."></div>
+                <div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" placeholder="Введите пароль..."></div>
                 <button class="btn-primary" onclick="login()">Войти</button>
-                <div style="text-align:center; margin-top:20px"><a onclick="showRegister()" style="color:#24ffa4; cursor:pointer">Зарегистрироваться</a></div>
+                <div class="auth-switch">Ещё нет аккаунта? <a onclick="showRegister()">Зарегистрироваться</a></div>
             </div>
             <div id="registerForm" style="display:none">
-                <h3 style="color:#24ffa4">Регистрация</h3>
-                <div class="form-group"><label>Имя</label><input type="text" id="regName"></div>
-                <div class="form-group"><label>Email</label><input type="email" id="regEmail"></div>
-                <div class="form-group"><label>Пароль</label><input type="password" id="regPassword"></div>
+                <h3>Регистрация</h3>
+                <div class="subtitle">Создайте новый аккаунт</div>
+                <div class="form-group"><label>Имя пользователя</label><input type="text" id="regName" placeholder="Ваше имя"></div>
+                <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="example@mail.com"></div>
+                <div class="form-group"><label>Пароль</label><input type="password" id="regPassword" placeholder="минимум 4 символа"></div>
                 <button class="btn-primary" onclick="register()">Зарегистрироваться</button>
-                <div style="text-align:center; margin-top:20px"><a onclick="showLogin()" style="color:#24ffa4; cursor:pointer">Войти</a></div>
+                <div class="auth-switch">Уже есть аккаунт? <a onclick="showLogin()">Войти</a></div>
             </div>
         </div>
     </div>
+
+    <!-- ПРОФИЛЬ -->
     <div id="profile" class="page">
-        <div class="auth-card" style="max-width:500px">
-            <h3 style="color:#24ffa4">Профиль</h3>
-            <div class="form-group"><label>Имя</label><input type="text" id="profileName"></div>
-            <div class="form-group"><label>Email</label><input type="email" id="profileEmail"></div>
-            <div class="form-group"><label>О себе</label><textarea rows="3" id="profileBio"></textarea></div>
+        <h2 style="color:#24ffa4; margin-bottom:25px; font-size:24px;">Редактировать профиль</h2>
+        <div class="form-container">
+            <div class="form-group"><label>Имя пользователя</label><input type="text" id="profileName" placeholder="Ваше имя"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="profileEmail" placeholder="Email"></div>
+            <div class="form-group"><label>О себе</label><textarea rows="3" id="profileBio" placeholder="Расскажите о себе..."></textarea></div>
             <button class="btn-primary" onclick="saveProfile()">Сохранить</button>
         </div>
     </div>
+
+    <!-- МОИ NFT -->
     <div id="my-nfts" class="page">
-        <h2 style="color:#24ffa4">Мои NFT</h2>
+        <h2 style="color:#24ffa4; margin-bottom:25px; font-size:24px;">Мои NFT</h2>
         <div class="nft-grid" id="myNftsGrid"></div>
     </div>
+
+    <!-- СОЗДАНИЕ NFT -->
     <div id="create" class="page">
-        <div class="auth-card" style="max-width:500px">
-            <h3 style="color:#24ffa4">Создать NFT</h3>
-            <div class="form-group"><label>Название</label><input type="text" id="nftName"></div>
-            <div class="form-group"><label>Цена</label><input type="text" id="nftPrice"></div>
-            <div class="form-group"><label>Ссылка на картинку</label><input type="text" id="nftImage"></div>
-            <button class="btn-primary" onclick="createNFT()">Создать</button>
+        <h2 style="color:#24ffa4; margin-bottom:25px; font-size:24px;">Создать NFT</h2>
+        <div class="form-container">
+            <div class="form-group"><label>Название NFT</label><input type="text" id="nftName" placeholder="Например: Nightmare (pt.17)"></div>
+            <div class="form-group"><label>Описание</label><textarea rows="3" id="nftDesc" placeholder="Опишите ваше произведение..."></textarea></div>
+            <div class="form-group"><label>Цена (USD)</label><input type="text" id="nftPrice" placeholder="49.99"></div>
+            <div class="form-group"><label>Ссылка на изображение</label><input type="text" id="nftImage" placeholder="https://..."></div>
+            <button class="btn-primary" onclick="createNFT()">Создать NFT</button>
         </div>
     </div>
 </div>
+
 <script>
     let nfts = [
         { creator: "KKSpecial", likes: 43, title: "Nightmare (pt.15)", price: "49.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" },
         { creator: "MorugaNFT", likes: 88, title: "King Bored Ape", price: "49.99", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&h=400&fit=crop" },
         { creator: "User-71068", likes: 24, title: "HorseNFT #1332", price: "49.99", img: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=400&h=400&fit=crop" },
-        { creator: "Angelina2022", likes: 93, title: "USSR 2.Edition", price: "49.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" }
+        { creator: "Angelina2022", likes: 93, title: "USSR 2.Edition", price: "49.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
+        { creator: "KKSpecial", likes: 12, title: "Nightmare (pt.16)", price: "49.99", img: "https://images.unsplash.com/photo-1618005198143-e5283b519a7f?w=400&h=400&fit=crop" }
     ];
     let myNFTs = [];
     let currentUser = null;
 
-    function renderNFTs() {
-        let container = document.getElementById('nftGrid');
-        if(!container) return;
-        container.innerHTML = nfts.map(n => `
+    function renderNFTs(filter = "") {
+        const container = document.getElementById('nftGrid');
+        if (!container) return;
+        const filtered = nfts.filter(n => n.title.toLowerCase().includes(filter.toLowerCase()) || n.creator.toLowerCase().includes(filter));
+        container.innerHTML = filtered.map(n => `
             <div class="nft-card">
                 <div class="card-header">
-                    <div class="user-info"><div class="avatar">⚪</div><span>${n.creator}</span></div>
-                    <div class="likes">▼ ${n.likes}</div>
+                    <div class="user-info">
+                        <div class="avatar">⚪</div>
+                        <span class="user-name">${n.creator}</span>
+                    </div>
+                    <div class="likes">${n.likes}</div>
                 </div>
                 <div class="card-img" style="background-image: url('${n.img}')"></div>
                 <div class="collection-label">COLLECTION NAME</div>
                 <div class="nft-title">${n.title}</div>
-                <div class="card-footer"><span class="price">$${n.price}</span><button class="btn-buy" onclick='buyNFT(${JSON.stringify(n).replace(/'/g,"\\'")})'>Buy</button></div>
+                <div class="card-footer">
+                    <span class="price">$${n.price}</span>
+                    <button class="btn-buy" onclick='buyNFT(${JSON.stringify(n).replace(/'/g, "\\'")})'>Buy</button>
+                </div>
             </div>
         `).join('');
     }
+
     function renderMyNFTs() {
-        let container = document.getElementById('myNftsGrid');
-        if(!container) return;
-        if(myNFTs.length === 0) { container.innerHTML = '<div style="text-align:center; padding:50px; color:#8e9eae">У вас пока нет NFT</div>'; return; }
+        const container = document.getElementById('myNftsGrid');
+        if (!container) return;
+        if (myNFTs.length === 0) {
+            container.innerHTML = '<div class="empty-state">✨ У вас пока нет NFT</div>';
+            return;
+        }
         container.innerHTML = myNFTs.map(n => `
             <div class="nft-card">
-                <div class="card-header"><div class="user-info"><div class="avatar">⚪</div><span>${n.creator}</span></div><div class="likes">▼ 0</div></div>
+                <div class="card-header">
+                    <div class="user-info"><div class="avatar">⚪</div><span class="user-name">${n.creator}</span></div>
+                    <div class="likes">0</div>
+                </div>
                 <div class="card-img" style="background-image: url('${n.img}')"></div>
                 <div class="collection-label">COLLECTION NAME</div>
                 <div class="nft-title">${n.title}</div>
@@ -261,16 +463,92 @@
             </div>
         `).join('');
     }
-    function buyNFT(n) { if(!currentUser) { alert('Войдите'); showPage('login'); return; } myNFTs.push({...n, creator: currentUser.name}); renderMyNFTs(); alert('Куплено!'); }
-    function createNFT() { if(!currentUser) { alert('Войдите'); showPage('login'); return; } let name=document.getElementById('nftName').value, price=document.getElementById('nftPrice').value, img=document.getElementById('nftImage').value; if(!name||!price||!img){alert('Заполните все'); return;} myNFTs.push({creator:currentUser.name, title:name, price:price, img:img}); alert('Создан!'); renderMyNFTs(); }
-    function showRegister() { document.getElementById('loginForm').style.display='none'; document.getElementById('registerForm').style.display='block'; }
-    function showLogin() { document.getElementById('loginForm').style.display='block'; document.getElementById('registerForm').style.display='none'; }
-    function register() { let name=document.getElementById('regName').value, email=document.getElementById('regEmail').value, pass=document.getElementById('regPassword').value; if(!name||!email||!pass){alert('Заполните'); return;} if(pass.length<4){alert('Пароль минимум 4'); return;} let user={name,email,password:pass}; localStorage.setItem('nft_user',JSON.stringify(user)); currentUser=user; alert('Регистрация успешна'); updateProfile(); showPage('profile'); }
-    function login() { let name=document.getElementById('loginName').value, pass=document.getElementById('loginPassword').value; let saved=localStorage.getItem('nft_user'); if(!saved){alert('Сначала зарегистрируйтесь'); return;} let user=JSON.parse(saved); if(user.name===name && user.password===pass){ currentUser=user; alert('Добро пожаловать'); updateProfile(); showPage('profile'); } else { alert('Неверно'); } }
-    function updateProfile() { if(currentUser){ document.getElementById('profileName').value=currentUser.name||''; document.getElementById('profileEmail').value=currentUser.email||''; document.getElementById('profileBio').value=currentUser.bio||''; } }
-    function saveProfile() { if(!currentUser){alert('Войдите'); return;} currentUser.name=document.getElementById('profileName').value; currentUser.email=document.getElementById('profileEmail').value; currentUser.bio=document.getElementById('profileBio').value; localStorage.setItem('nft_user',JSON.stringify(currentUser)); alert('Сохранено'); }
-    function showPage(pageId) { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active-page')); document.getElementById(pageId).classList.add('active-page'); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); if(pageId==='my-nfts') renderMyNFTs(); }
-    let saved=localStorage.getItem('nft_user'); if(saved){ currentUser=JSON.parse(saved); updateProfile(); }
+
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.addEventListener('input', (e) => renderNFTs(e.target.value));
+
+    function buyNFT(nft) {
+        if (!currentUser) { alert('Сначала войдите в аккаунт!'); showPage('login'); return; }
+        myNFTs.push({ ...nft, creator: currentUser.name });
+        renderMyNFTs();
+        alert(`✅ Вы купили "${nft.title}"!`);
+    }
+
+    function createNFT() {
+        if (!currentUser) { alert('Войдите в аккаунт!'); showPage('login'); return; }
+        const name = document.getElementById('nftName').value;
+        const price = document.getElementById('nftPrice').value;
+        const img = document.getElementById('nftImage').value;
+        if (!name || !price || !img) { alert('Заполните название, цену и ссылку на изображение!'); return; }
+        myNFTs.push({ creator: currentUser.name, title: name, price: price, img: img, likes: 0 });
+        alert('✅ NFT создан!');
+        document.getElementById('nftName').value = '';
+        document.getElementById('nftPrice').value = '';
+        document.getElementById('nftImage').value = '';
+        renderMyNFTs();
+    }
+
+    function showRegister() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+    }
+    function showLogin() {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+    }
+    function register() {
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const pass = document.getElementById('regPassword').value;
+        if (!name || !email || !pass) { alert('Заполните все поля!'); return; }
+        if (pass.length < 4) { alert('Пароль минимум 4 символа'); return; }
+        const user = { name, email, password: pass };
+        localStorage.setItem('nft_user', JSON.stringify(user));
+        currentUser = user;
+        alert('✅ Регистрация успешна!');
+        updateProfileForm();
+        showPage('profile');
+    }
+    function login() {
+        const name = document.getElementById('loginName').value;
+        const pass = document.getElementById('loginPassword').value;
+        const saved = localStorage.getItem('nft_user');
+        if (!saved) { alert('Сначала зарегистрируйтесь!'); return; }
+        const user = JSON.parse(saved);
+        if (user.name === name && user.password === pass) {
+            currentUser = user;
+            alert(`✅ Добро пожаловать, ${user.name}!`);
+            updateProfileForm();
+            showPage('profile');
+        } else { alert('Неверное имя или пароль'); }
+    }
+    function updateProfileForm() {
+        if (currentUser) {
+            document.getElementById('profileName').value = currentUser.name || '';
+            document.getElementById('profileEmail').value = currentUser.email || '';
+            document.getElementById('profileBio').value = currentUser.bio || '';
+        }
+    }
+    function saveProfile() {
+        if (!currentUser) { alert('Войдите в аккаунт!'); showPage('login'); return; }
+        currentUser.name = document.getElementById('profileName').value;
+        currentUser.email = document.getElementById('profileEmail').value;
+        currentUser.bio = document.getElementById('profileBio').value;
+        localStorage.setItem('nft_user', JSON.stringify(currentUser));
+        alert('✅ Профиль сохранён!');
+    }
+
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(pageId).classList.add('active-page');
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        if (pageId === 'my-nfts') renderMyNFTs();
+        if (pageId === 'nfts') renderNFTs();
+    }
+
+    const saved = localStorage.getItem('nft_user');
+    if (saved) { currentUser = JSON.parse(saved); updateProfileForm(); }
     renderNFTs();
 </script>
 </body>
