@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Market — острый стиль</title>
+    <title>NFT Market | Острый стиль</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
         }
 
         body {
@@ -17,7 +17,40 @@
             color: #fff;
         }
 
-        /* ВЕРХНЕЕ МЕНЮ — острые углы */
+        /* Модальное окно (поздравление) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #11161f;
+            border: 2px solid #24ffa4;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .modal-content h2 {
+            color: #24ffa4;
+            margin-bottom: 16px;
+        }
+        .modal-content button {
+            background: #24ffa4;
+            border: none;
+            padding: 10px 30px;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
         .navbar {
             display: flex;
             gap: 8px;
@@ -27,15 +60,12 @@
             background: #0f121a;
             border-bottom: 2px solid #24ffa4;
         }
-
         .logo {
             font-size: 20px;
             font-weight: 800;
             color: #24ffa4;
             margin-right: 20px;
-            letter-spacing: -0.5px;
         }
-
         .nav-btn {
             background: transparent;
             border: none;
@@ -44,83 +74,46 @@
             font-weight: 600;
             padding: 10px 20px;
             cursor: pointer;
-            transition: 0.2s;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
+        .nav-btn:hover { background: #1e242e; color: #fff; }
+        .nav-btn.active { background: #24ffa4; color: #0b0e14; }
 
-        .nav-btn:hover {
-            background: #1e242e;
-            color: #fff;
-        }
-
-        .nav-btn.active {
-            background: #24ffa4;
-            color: #0b0e14;
-        }
-
-        .main-content {
-            padding: 32px 40px;
-        }
-
-        /* ПОИСК — острый прямоугольник */
-        .search-box {
-            margin-bottom: 32px;
-            max-width: 340px;
-        }
-
+        .main-content { padding: 32px 40px; }
+        .search-box { margin-bottom: 32px; max-width: 340px; }
         .search-box input {
             width: 100%;
             background: #141a24;
             border: 2px solid #2a333d;
             padding: 12px 20px;
             color: #fff;
-            font-size: 14px;
             outline: none;
         }
+        .search-box input:focus { border-color: #24ffa4; }
 
-        .search-box input:focus {
-            border-color: #24ffa4;
-        }
-
-        /* СЕТКА КАРТОЧЕК */
         .nft-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 24px;
         }
-
-        /* КАРТОЧКА — острые углы, без скруглений */
         .nft-card {
             background: #11161f;
             border: 2px solid #232a33;
             padding: 20px;
-            transition: all 0.2s ease;
+            transition: 0.2s;
             display: flex;
             flex-direction: column;
             height: 100%;
         }
+        .nft-card:hover { border-color: #24ffa4; transform: translateY(-3px); }
 
-        .nft-card:hover {
-            border-color: #24ffa4;
-            transform: translateY(-3px);
-        }
-
-        /* Верхняя строка: аватар (квадратный) + имя + лайки */
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
         }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* АВАТАР — квадратный, острый */
+        .user-info { display: flex; align-items: center; gap: 10px; }
         .avatar {
             width: 38px;
             height: 38px;
@@ -132,60 +125,31 @@
             font-weight: 700;
             color: #24ffa4;
         }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 15px;
-            color: #eef2ff;
-        }
-
-        /* ЛАЙКИ — острый прямоугольник без скругления */
+        .user-name { font-weight: 600; font-size: 15px; }
         .likes {
             color: #24ffa4;
             font-weight: 700;
             font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(36, 255, 164, 0.1);
+            background: rgba(36,255,164,0.1);
             padding: 4px 10px;
-            border: 1px solid rgba(36, 255, 164, 0.3);
+            border: 1px solid rgba(36,255,164,0.3);
         }
-
-        .likes::before {
-            content: "▼";
-            font-size: 10px;
-        }
-
-        /* ИЗОБРАЖЕНИЕ NFT — квадратное, острые углы */
         .card-img {
             width: 100%;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 1/1;
             background-size: cover;
             background-position: center;
             margin-bottom: 16px;
-            background-color: #1a212c;
             border: 1px solid #2a333d;
         }
-
-        /* Текст COLLECTION NAME */
         .collection-label {
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 1px;
             color: #6b7c8f;
-            margin-bottom: 6px;
             text-transform: uppercase;
+            margin-bottom: 6px;
         }
-
-        .nft-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            line-height: 1.3;
-        }
-
-        /* Нижняя часть: цена + кнопка */
+        .nft-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
         .card-footer {
             display: flex;
             justify-content: space-between;
@@ -194,32 +158,18 @@
             padding-top: 12px;
             border-top: 2px solid #232a33;
         }
-
-        .price {
-            font-size: 20px;
-            font-weight: 800;
-            color: #24ffa4;
-        }
-
-        /* КНОПКА BUY — острая, без скруглений */
+        .price { font-size: 20px; font-weight: 800; color: #24ffa4; }
         .btn-buy {
             background: transparent;
             border: 2px solid #24ffa4;
             color: #24ffa4;
             padding: 6px 20px;
             font-weight: 700;
-            font-size: 13px;
             cursor: pointer;
-            transition: 0.2s;
             text-transform: uppercase;
         }
+        .btn-buy:hover { background: #24ffa4; color: #0b0e14; }
 
-        .btn-buy:hover {
-            background: #24ffa4;
-            color: #0b0e14;
-        }
-
-        /* ФОРМЫ — острые углы */
         .auth-card {
             max-width: 440px;
             margin: 40px auto;
@@ -227,115 +177,47 @@
             border: 2px solid #232a33;
             padding: 40px;
         }
-
-        .auth-card h3 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #24ffa4;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #8e9eae;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #b0c0d0;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
+        .auth-card h3 { font-size: 24px; color: #24ffa4; text-align: center; margin-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #b0c0d0; font-weight: 600; }
         input, textarea {
             width: 100%;
             background: #0f131c;
             border: 2px solid #2a333d;
-            padding: 12px 16px;
+            padding: 12px;
             color: #fff;
-            font-size: 14px;
             outline: none;
         }
-
-        input:focus, textarea:focus {
-            border-color: #24ffa4;
-        }
-
+        input:focus, textarea:focus { border-color: #24ffa4; }
         .btn-primary {
             background: #24ffa4;
             border: none;
             padding: 12px;
             font-weight: 700;
-            font-size: 14px;
-            color: #0b0e14;
             cursor: pointer;
             width: 100%;
-            transition: 0.2s;
             text-transform: uppercase;
         }
-
-        .btn-primary:hover {
-            background: #1de08f;
-        }
-
-        .auth-switch {
-            text-align: center;
-            margin-top: 22px;
-            color: #8e9eae;
-            font-size: 13px;
-        }
-
-        .auth-switch a {
-            color: #24ffa4;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .form-container {
-            max-width: 500px;
-            background: #11161f;
-            border: 2px solid #232a33;
-            padding: 30px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 50px;
-            background: #11161f;
-            border: 2px solid #232a33;
-            color: #8e9eae;
-        }
-
-        .page {
-            display: none;
-            animation: fade 0.2s ease;
-        }
-
-        .page.active-page {
-            display: block;
-        }
-
-        @keyframes fade {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @media (max-width: 700px) {
-            .navbar { padding: 12px 20px; }
-            .nav-btn { padding: 6px 12px; font-size: 12px; }
-            .main-content { padding: 20px; }
-        }
+        .auth-switch { text-align: center; margin-top: 22px; color: #8e9eae; }
+        .auth-switch a { color: #24ffa4; cursor: pointer; font-weight: 600; }
+        .form-container { max-width: 500px; background: #11161f; border: 2px solid #232a33; padding: 30px; }
+        .empty-state { text-align: center; padding: 50px; background: #11161f; border: 2px solid #232a33; color: #8e9eae; }
+        .page { display: none; animation: fade 0.2s ease; }
+        .page.active-page { display: block; }
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 700px) { .navbar { padding: 12px 20px; } .nav-btn { padding: 6px 12px; font-size: 12px; } .main-content { padding: 20px; } }
     </style>
 </head>
 <body>
+
+<!-- Модальное окно поздравления -->
+<div id="congratsModal" class="modal">
+    <div class="modal-content">
+        <h2>🎉 Поздравляем!</h2>
+        <p style="margin: 16px 0;">Вы успешно приобрели NFT!</p>
+        <button onclick="closeModal()">Отлично</button>
+    </div>
+</div>
 
 <div class="navbar">
     <div class="logo">NFT MARKET</div>
@@ -347,20 +229,16 @@
 </div>
 
 <div class="main-content">
-    <!-- ГЛАВНАЯ СТРАНИЦА NFT -->
     <div id="nfts" class="page active-page">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search">
-        </div>
+        <div class="search-box"><input type="text" id="searchInput" placeholder="Search"></div>
         <div class="nft-grid" id="nftGrid"></div>
     </div>
 
-    <!-- ЛОГИН / РЕГИСТРАЦИЯ -->
     <div id="login" class="page">
         <div class="auth-card">
             <div id="loginForm">
                 <h3>Войти в аккаунт</h3>
-                <div class="subtitle">Добро пожаловать обратно на NFTMarket</div>
+                <div class="subtitle" style="text-align:center; margin-bottom:30px;">Добро пожаловать обратно на NFTMarket</div>
                 <div class="form-group"><label>Имя пользователя</label><input type="text" id="loginName" placeholder="Введите имя..."></div>
                 <div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" placeholder="Введите пароль..."></div>
                 <button class="btn-primary" onclick="login()">Войти</button>
@@ -368,7 +246,6 @@
             </div>
             <div id="registerForm" style="display:none">
                 <h3>Регистрация</h3>
-                <div class="subtitle">Создайте новый аккаунт</div>
                 <div class="form-group"><label>Имя пользователя</label><input type="text" id="regName" placeholder="Ваше имя"></div>
                 <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="example@mail.com"></div>
                 <div class="form-group"><label>Пароль</label><input type="password" id="regPassword" placeholder="минимум 4 символа"></div>
@@ -378,9 +255,8 @@
         </div>
     </div>
 
-    <!-- ПРОФИЛЬ -->
     <div id="profile" class="page">
-        <h2 style="color:#24ffa4; margin-bottom:25px; font-size:24px;">Редактировать профиль</h2>
+        <h2 style="color:#24ffa4; margin-bottom:25px;">Редактировать профиль</h2>
         <div class="form-container">
             <div class="form-group"><label>Имя пользователя</label><input type="text" id="profileName" placeholder="Ваше имя"></div>
             <div class="form-group"><label>Email</label><input type="email" id="profileEmail" placeholder="Email"></div>
@@ -389,15 +265,13 @@
         </div>
     </div>
 
-    <!-- МОИ NFT -->
     <div id="my-nfts" class="page">
-        <h2 style="color:#24ffa4; margin-bottom:25px; font-size:24px;">Мои NFT</h2>
+        <h2 style="color:#24ffa4; margin-bottom:25px;">Мои NFT</h2>
         <div class="nft-grid" id="myNftsGrid"></div>
     </div>
 
-    <!-- СОЗДАНИЕ NFT -->
     <div id="create" class="page">
-        <h2 style="color:#24ffa4; margin-bottom:25px; font-size:24px;">Создать NFT</h2>
+        <h2 style="color:#24ffa4; margin-bottom:25px;">Создать NFT</h2>
         <div class="form-container">
             <div class="form-group"><label>Название NFT</label><input type="text" id="nftName" placeholder="Например: Nightmare (pt.17)"></div>
             <div class="form-group"><label>Описание</label><textarea rows="3" id="nftDesc" placeholder="Опишите ваше произведение..."></textarea></div>
@@ -409,15 +283,35 @@
 </div>
 
 <script>
+    // ========== МНОГО NFT (15 штук, красивые бесплатные фото) ==========
     let nfts = [
         { creator: "KKSpecial", likes: 43, title: "Nightmare (pt.15)", price: "49.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" },
         { creator: "MorugaNFT", likes: 88, title: "King Bored Ape", price: "49.99", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&h=400&fit=crop" },
         { creator: "User-71068", likes: 24, title: "HorseNFT #1332", price: "49.99", img: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=400&h=400&fit=crop" },
         { creator: "Angelina2022", likes: 93, title: "USSR 2.Edition", price: "49.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
-        { creator: "KKSpecial", likes: 12, title: "Nightmare (pt.16)", price: "49.99", img: "https://images.unsplash.com/photo-1618005198143-e5283b519a7f?w=400&h=400&fit=crop" }
+        { creator: "KKSpecial", likes: 12, title: "Nightmare (pt.16)", price: "49.99", img: "https://images.unsplash.com/photo-1618005198143-e5283b519a7f?w=400&h=400&fit=crop" },
+        { creator: "CryptoPainter", likes: 67, title: "Cyber Skull", price: "39.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
+        { creator: "NeonMaster", likes: 54, title: "Neon City", price: "59.99", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&h=400&fit=crop" },
+        { creator: "ArtBlock", likes: 33, title: "Abstract Dream", price: "29.99", img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=400&fit=crop" },
+        { creator: "PixelWizard", likes: 77, title: "8Bit Hero", price: "19.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" },
+        { creator: "Galactic", likes: 102, title: "Space Odyssey", price: "99.99", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&h=400&fit=crop" },
+        { creator: "CyberFox", likes: 45, title: "Digital Fox", price: "44.99", img: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=400&h=400&fit=crop" },
+        { creator: "MysticArt", likes: 38, title: "Mystic Forest", price: "34.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
+        { creator: "RetroWave", likes: 91, title: "Retro Synth", price: "54.99", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&h=400&fit=crop" },
+        { creator: "DarkLord", likes: 29, title: "Dark Knight", price: "69.99", img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=400&fit=crop" },
+        { creator: "FutureArt", likes: 56, title: "Future City", price: "79.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" }
     ];
+
     let myNFTs = [];
     let currentUser = null;
+
+    // Модальное окно
+    function showCongrats() {
+        document.getElementById('congratsModal').style.display = 'flex';
+    }
+    function closeModal() {
+        document.getElementById('congratsModal').style.display = 'none';
+    }
 
     function renderNFTs(filter = "") {
         const container = document.getElementById('nftGrid');
@@ -426,19 +320,13 @@
         container.innerHTML = filtered.map(n => `
             <div class="nft-card">
                 <div class="card-header">
-                    <div class="user-info">
-                        <div class="avatar">⚪</div>
-                        <span class="user-name">${n.creator}</span>
-                    </div>
+                    <div class="user-info"><div class="avatar">⚪</div><span class="user-name">${n.creator}</span></div>
                     <div class="likes">${n.likes}</div>
                 </div>
                 <div class="card-img" style="background-image: url('${n.img}')"></div>
                 <div class="collection-label">COLLECTION NAME</div>
                 <div class="nft-title">${n.title}</div>
-                <div class="card-footer">
-                    <span class="price">$${n.price}</span>
-                    <button class="btn-buy" onclick='buyNFT(${JSON.stringify(n).replace(/'/g, "\\'")})'>Buy</button>
-                </div>
+                <div class="card-footer"><span class="price">$${n.price}</span><button class="btn-buy" onclick='buyNFT(${JSON.stringify(n).replace(/'/g, "\\'")})'>Buy</button></div>
             </div>
         `).join('');
     }
@@ -452,10 +340,7 @@
         }
         container.innerHTML = myNFTs.map(n => `
             <div class="nft-card">
-                <div class="card-header">
-                    <div class="user-info"><div class="avatar">⚪</div><span class="user-name">${n.creator}</span></div>
-                    <div class="likes">0</div>
-                </div>
+                <div class="card-header"><div class="user-info"><div class="avatar">⚪</div><span class="user-name">${n.creator}</span></div><div class="likes">0</div></div>
                 <div class="card-img" style="background-image: url('${n.img}')"></div>
                 <div class="collection-label">COLLECTION NAME</div>
                 <div class="nft-title">${n.title}</div>
@@ -471,7 +356,7 @@
         if (!currentUser) { alert('Сначала войдите в аккаунт!'); showPage('login'); return; }
         myNFTs.push({ ...nft, creator: currentUser.name });
         renderMyNFTs();
-        alert(`✅ Вы купили "${nft.title}"!`);
+        showCongrats(); // ПОЗДРАВЛЕНИЕ
     }
 
     function createNFT() {
