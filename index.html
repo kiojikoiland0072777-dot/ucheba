@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Market | Острый стиль</title>
+    <title>NFT Market | Создавай и продавай</title>
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
             color: #fff;
         }
 
-        /* Модальное окно (поздравление) */
+        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -36,11 +36,6 @@
             padding: 40px;
             text-align: center;
             max-width: 400px;
-            width: 90%;
-        }
-        .modal-content h2 {
-            color: #24ffa4;
-            margin-bottom: 16px;
         }
         .modal-content button {
             background: #24ffa4;
@@ -80,17 +75,8 @@
         .nav-btn.active { background: #24ffa4; color: #0b0e14; }
 
         .main-content { padding: 32px 40px; }
-        .search-box { margin-bottom: 32px; max-width: 340px; }
-        .search-box input {
-            width: 100%;
-            background: #141a24;
-            border: 2px solid #2a333d;
-            padding: 12px 20px;
-            color: #fff;
-            outline: none;
-        }
-        .search-box input:focus { border-color: #24ffa4; }
 
+        /* Сетка карточек */
         .nft-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -101,9 +87,7 @@
             border: 2px solid #232a33;
             padding: 20px;
             transition: 0.2s;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            cursor: pointer;
         }
         .nft-card:hover { border-color: #24ffa4; transform: translateY(-3px); }
 
@@ -140,7 +124,6 @@
             background-size: cover;
             background-position: center;
             margin-bottom: 16px;
-            border: 1px solid #2a333d;
         }
         .collection-label {
             font-size: 11px;
@@ -170,47 +153,49 @@
         }
         .btn-buy:hover { background: #24ffa4; color: #0b0e14; }
 
-        .auth-card {
-            max-width: 440px;
-            margin: 40px auto;
-            background: #11161f;
-            border: 2px solid #232a33;
-            padding: 40px;
-        }
-        .auth-card h3 { font-size: 24px; color: #24ffa4; text-align: center; margin-bottom: 10px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; color: #b0c0d0; font-weight: 600; }
-        input, textarea {
-            width: 100%;
-            background: #0f131c;
-            border: 2px solid #2a333d;
-            padding: 12px;
-            color: #fff;
-            outline: none;
-        }
-        input:focus, textarea:focus { border-color: #24ffa4; }
-        .btn-primary {
-            background: #24ffa4;
-            border: none;
-            padding: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
-        }
-        .auth-switch { text-align: center; margin-top: 22px; color: #8e9eae; }
-        .auth-switch a { color: #24ffa4; cursor: pointer; font-weight: 600; }
-        .form-container { max-width: 500px; background: #11161f; border: 2px solid #232a33; padding: 30px; }
-        .empty-state { text-align: center; padding: 50px; background: #11161f; border: 2px solid #232a33; color: #8e9eae; }
+        /* Детальная страница */
+        .detail-container { max-width: 900px; margin: 0 auto; }
+        .detail-header { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; }
+        .detail-img { width: 300px; aspect-ratio: 1/1; background-size: cover; background-position: center; border: 2px solid #232a33; }
+        .detail-info { flex: 1; }
+        .detail-creator { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .detail-title { font-size: 32px; font-weight: 800; margin-bottom: 16px; }
+        .detail-description { color: #b0b8c5; line-height: 1.6; margin-bottom: 24px; }
+        .detail-price { font-size: 28px; font-weight: 800; color: #24ffa4; margin-bottom: 16px; }
+        .owner-badge { background: rgba(36,255,164,0.1); border: 1px solid #24ffa4; padding: 8px 16px; display: inline-block; margin-bottom: 20px; }
+
+        .more-by { margin: 40px 0; padding-top: 30px; border-top: 2px solid #232a33; }
+        .more-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .more-card { background: #11161f; border: 2px solid #232a33; padding: 12px; cursor: pointer; }
+        .more-card-img { width: 100%; aspect-ratio: 1/1; background-size: cover; background-position: center; margin-bottom: 8px; }
+
+        /* Комментарии */
+        .comments-section { margin-top: 40px; padding-top: 30px; border-top: 2px solid #232a33; }
+        .comments-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+        .comment-input { display: flex; gap: 12px; margin-bottom: 30px; }
+        .comment-input input { flex: 1; background: #0f131c; border: 2px solid #2a333d; padding: 12px; color: #fff; outline: none; }
+        .comment-input input:focus { border-color: #24ffa4; }
+        .comment-input button { background: #24ffa4; border: none; padding: 0 24px; font-weight: 700; cursor: pointer; }
+        .comment { background: #11161f; border: 1px solid #232a33; padding: 16px; margin-bottom: 12px; }
+        .comment-author { color: #24ffa4; font-weight: 700; margin-bottom: 8px; }
+        .comment-text { color: #b0b8c5; line-height: 1.4; }
+        .no-comments { color: #6b7c8f; text-align: center; padding: 40px; }
+
+        .back-btn { background: transparent; border: 2px solid #24ffa4; color: #24ffa4; padding: 8px 20px; cursor: pointer; margin-bottom: 30px; display: inline-block; }
         .page { display: none; animation: fade 0.2s ease; }
         .page.active-page { display: block; }
         @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-        @media (max-width: 700px) { .navbar { padding: 12px 20px; } .nav-btn { padding: 6px 12px; font-size: 12px; } .main-content { padding: 20px; } }
+        @media (max-width: 700px) {
+            .navbar { padding: 12px 20px; }
+            .nav-btn { padding: 6px 12px; font-size: 12px; }
+            .main-content { padding: 20px; }
+            .detail-header { flex-direction: column; }
+            .detail-img { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-<!-- Модальное окно поздравления -->
 <div id="congratsModal" class="modal">
     <div class="modal-content">
         <h2>🎉 Поздравляем!</h2>
@@ -229,96 +214,117 @@
 </div>
 
 <div class="main-content">
+    <!-- ГЛАВНАЯ СТРАНИЦА NFT -->
     <div id="nfts" class="page active-page">
-        <div class="search-box"><input type="text" id="searchInput" placeholder="Search"></div>
+        <div class="search-box" style="margin-bottom:32px; max-width:340px;">
+            <input type="text" id="searchInput" placeholder="Search" style="width:100%; background:#141a24; border:2px solid #2a333d; padding:12px; color:#fff;">
+        </div>
         <div class="nft-grid" id="nftGrid"></div>
     </div>
 
+    <!-- ДЕТАЛЬНАЯ СТРАНИЦА -->
+    <div id="detail" class="page">
+        <button class="back-btn" onclick="showPage('nfts')">← Назад к NFT</button>
+        <div class="detail-container" id="detailContainer"></div>
+    </div>
+
+    <!-- LOGIN -->
     <div id="login" class="page">
-        <div class="auth-card">
+        <div class="auth-card" style="max-width:440px; margin:40px auto; background:#11161f; border:2px solid #232a33; padding:40px;">
             <div id="loginForm">
-                <h3>Войти в аккаунт</h3>
-                <div class="subtitle" style="text-align:center; margin-bottom:30px;">Добро пожаловать обратно на NFTMarket</div>
-                <div class="form-group"><label>Имя пользователя</label><input type="text" id="loginName" placeholder="Введите имя..."></div>
-                <div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" placeholder="Введите пароль..."></div>
-                <button class="btn-primary" onclick="login()">Войти</button>
-                <div class="auth-switch">Ещё нет аккаунта? <a onclick="showRegister()">Зарегистрироваться</a></div>
+                <h3 style="color:#24ffa4; text-align:center;">Войти в аккаунт</h3>
+                <div class="form-group"><label>Имя пользователя</label><input type="text" id="loginName" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+                <div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+                <button class="btn-primary" onclick="login()" style="background:#24ffa4; border:none; padding:12px; width:100%; font-weight:700;">Войти</button>
+                <div style="text-align:center; margin-top:20px;"><a onclick="showRegister()" style="color:#24ffa4; cursor:pointer;">Зарегистрироваться</a></div>
             </div>
             <div id="registerForm" style="display:none">
-                <h3>Регистрация</h3>
-                <div class="form-group"><label>Имя пользователя</label><input type="text" id="regName" placeholder="Ваше имя"></div>
-                <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="example@mail.com"></div>
-                <div class="form-group"><label>Пароль</label><input type="password" id="regPassword" placeholder="минимум 4 символа"></div>
-                <button class="btn-primary" onclick="register()">Зарегистрироваться</button>
-                <div class="auth-switch">Уже есть аккаунт? <a onclick="showLogin()">Войти</a></div>
+                <h3 style="color:#24ffa4; text-align:center;">Регистрация</h3>
+                <div class="form-group"><label>Имя</label><input type="text" id="regName" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+                <div class="form-group"><label>Email</label><input type="email" id="regEmail" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+                <div class="form-group"><label>Пароль</label><input type="password" id="regPassword" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+                <button class="btn-primary" onclick="register()" style="background:#24ffa4; border:none; padding:12px; width:100%; font-weight:700;">Зарегистрироваться</button>
+                <div style="text-align:center; margin-top:20px;"><a onclick="showLogin()" style="color:#24ffa4; cursor:pointer;">Войти</a></div>
             </div>
         </div>
     </div>
 
+    <!-- PROFILE -->
     <div id="profile" class="page">
-        <h2 style="color:#24ffa4; margin-bottom:25px;">Редактировать профиль</h2>
-        <div class="form-container">
-            <div class="form-group"><label>Имя пользователя</label><input type="text" id="profileName" placeholder="Ваше имя"></div>
-            <div class="form-group"><label>Email</label><input type="email" id="profileEmail" placeholder="Email"></div>
-            <div class="form-group"><label>О себе</label><textarea rows="3" id="profileBio" placeholder="Расскажите о себе..."></textarea></div>
-            <button class="btn-primary" onclick="saveProfile()">Сохранить</button>
+        <h2 style="color:#24ffa4;">Редактировать профиль</h2>
+        <div style="max-width:500px; background:#11161f; border:2px solid #232a33; padding:30px; margin-top:20px;">
+            <div class="form-group"><label>Имя</label><input type="text" id="profileName" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="profileEmail" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+            <div class="form-group"><label>О себе</label><textarea rows="3" id="profileBio" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></textarea></div>
+            <button class="btn-primary" onclick="saveProfile()" style="background:#24ffa4; border:none; padding:12px; width:100%; font-weight:700;">Сохранить</button>
         </div>
     </div>
 
+    <!-- MY NFTS -->
     <div id="my-nfts" class="page">
-        <h2 style="color:#24ffa4; margin-bottom:25px;">Мои NFT</h2>
+        <h2 style="color:#24ffa4;">Мои NFT</h2>
         <div class="nft-grid" id="myNftsGrid"></div>
     </div>
 
+    <!-- CREATE NFT -->
     <div id="create" class="page">
-        <h2 style="color:#24ffa4; margin-bottom:25px;">Создать NFT</h2>
-        <div class="form-container">
-            <div class="form-group"><label>Название NFT</label><input type="text" id="nftName" placeholder="Например: Nightmare (pt.17)"></div>
-            <div class="form-group"><label>Описание</label><textarea rows="3" id="nftDesc" placeholder="Опишите ваше произведение..."></textarea></div>
-            <div class="form-group"><label>Цена (USD)</label><input type="text" id="nftPrice" placeholder="49.99"></div>
-            <div class="form-group"><label>Ссылка на изображение</label><input type="text" id="nftImage" placeholder="https://..."></div>
-            <button class="btn-primary" onclick="createNFT()">Создать NFT</button>
+        <h2 style="color:#24ffa4;">Создать NFT</h2>
+        <div style="max-width:500px; background:#11161f; border:2px solid #232a33; padding:30px;">
+            <div class="form-group"><label>Название</label><input type="text" id="nftName" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+            <div class="form-group"><label>Цена (USD)</label><input type="text" id="nftPrice" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+            <div class="form-group"><label>Ссылка на изображение</label><input type="text" id="nftImage" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
+            <div class="form-group"><label>Описание</label><textarea rows="3" id="nftDescription" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;" placeholder="Опишите ваше произведение..."></textarea></div>
+            <button class="btn-primary" onclick="createNFT()" style="background:#24ffa4; border:none; padding:12px; width:100%; font-weight:700;">Создать NFT</button>
         </div>
     </div>
 </div>
 
 <script>
-    // ========== МНОГО NFT (15 штук, красивые бесплатные фото) ==========
-    let nfts = [
-        { creator: "KKSpecial", likes: 43, title: "Nightmare (pt.15)", price: "49.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" },
-        { creator: "MorugaNFT", likes: 88, title: "King Bored Ape", price: "49.99", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&h=400&fit=crop" },
-        { creator: "User-71068", likes: 24, title: "HorseNFT #1332", price: "49.99", img: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=400&h=400&fit=crop" },
-        { creator: "Angelina2022", likes: 93, title: "USSR 2.Edition", price: "49.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
-        { creator: "KKSpecial", likes: 12, title: "Nightmare (pt.16)", price: "49.99", img: "https://images.unsplash.com/photo-1618005198143-e5283b519a7f?w=400&h=400&fit=crop" },
-        { creator: "CryptoPainter", likes: 67, title: "Cyber Skull", price: "39.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
-        { creator: "NeonMaster", likes: 54, title: "Neon City", price: "59.99", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&h=400&fit=crop" },
-        { creator: "ArtBlock", likes: 33, title: "Abstract Dream", price: "29.99", img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=400&fit=crop" },
-        { creator: "PixelWizard", likes: 77, title: "8Bit Hero", price: "19.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" },
-        { creator: "Galactic", likes: 102, title: "Space Odyssey", price: "99.99", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&h=400&fit=crop" },
-        { creator: "CyberFox", likes: 45, title: "Digital Fox", price: "44.99", img: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=400&h=400&fit=crop" },
-        { creator: "MysticArt", likes: 38, title: "Mystic Forest", price: "34.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop" },
-        { creator: "RetroWave", likes: 91, title: "Retro Synth", price: "54.99", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&h=400&fit=crop" },
-        { creator: "DarkLord", likes: 29, title: "Dark Knight", price: "69.99", img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=400&fit=crop" },
-        { creator: "FutureArt", likes: 56, title: "Future City", price: "79.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop" }
+    // ========== ГЛОБАЛЬНЫЙ МАССИВ NFT ==========
+    let allNFTs = [
+        { id: 0, creator: "KKSpecial", likes: 43, title: "Nightmare (pt.15)", price: "49.99", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop", description: "This digital asset is part of our exclusive limited edition collection, crafted with unique artistic elements that blend traditional aesthetics with futuristic themes." },
+        { id: 1, creator: "MorugaNFT", likes: 88, title: "King Bored Ape", price: "49.99", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&h=400&fit=crop", description: "A unique digital collectible featuring the iconic bored ape with royal accessories." },
+        { id: 2, creator: "User-71068", likes: 24, title: "HorseNFT #1332", price: "49.99", img: "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?w=400&h=400&fit=crop", description: "A majestic horse in digital form. Captures the spirit of freedom and grace." },
+        { id: 3, creator: "Angelina2022", likes: 93, title: "USSR 2.Edition", price: "49.99", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=400&h=400&fit=crop", description: "A nostalgic journey back to the Soviet era, reimagined with futuristic art style." },
+        { id: 4, creator: "KKSpecial", likes: 12, title: "Nightmare (pt.16)", price: "49.99", img: "https://images.unsplash.com/photo-1618005198143-e5283b519a7f?w=400&h=400&fit=crop", description: "The sequel to the hit Nightmare series. Darker, more intense." }
     ];
 
+    let comments = {};
     let myNFTs = [];
     let currentUser = null;
+    let nextId = 5;
 
-    // Модальное окно
-    function showCongrats() {
-        document.getElementById('congratsModal').style.display = 'flex';
-    }
-    function closeModal() {
-        document.getElementById('congratsModal').style.display = 'none';
+    // Инициализация комментариев
+    allNFTs.forEach(nft => { if (!comments[nft.id]) comments[nft.id] = []; });
+
+    // Сохранение NFT в localStorage
+    function saveNFTsToLocal() {
+        localStorage.setItem('all_nfts', JSON.stringify(allNFTs));
+        localStorage.setItem('comments', JSON.stringify(comments));
     }
 
+    // Загрузка NFT из localStorage
+    function loadNFTsFromLocal() {
+        const saved = localStorage.getItem('all_nfts');
+        if (saved) {
+            allNFTs = JSON.parse(saved);
+            nextId = Math.max(...allNFTs.map(n => n.id), 0) + 1;
+        }
+        const savedComments = localStorage.getItem('comments');
+        if (savedComments) {
+            comments = JSON.parse(savedComments);
+        } else {
+            allNFTs.forEach(nft => { if (!comments[nft.id]) comments[nft.id] = []; });
+        }
+    }
+
+    // ========== ОТОБРАЖЕНИЕ ГЛАВНОЙ СТРАНИЦЫ ==========
     function renderNFTs(filter = "") {
         const container = document.getElementById('nftGrid');
         if (!container) return;
-        const filtered = nfts.filter(n => n.title.toLowerCase().includes(filter.toLowerCase()) || n.creator.toLowerCase().includes(filter));
+        const filtered = allNFTs.filter(n => n.title.toLowerCase().includes(filter.toLowerCase()) || n.creator.toLowerCase().includes(filter));
         container.innerHTML = filtered.map(n => `
-            <div class="nft-card">
+            <div class="nft-card" onclick="openDetail(${n.id})">
                 <div class="card-header">
                     <div class="user-info"><div class="avatar">⚪</div><span class="user-name">${n.creator}</span></div>
                     <div class="likes">${n.likes}</div>
@@ -326,7 +332,10 @@
                 <div class="card-img" style="background-image: url('${n.img}')"></div>
                 <div class="collection-label">COLLECTION NAME</div>
                 <div class="nft-title">${n.title}</div>
-                <div class="card-footer"><span class="price">$${n.price}</span><button class="btn-buy" onclick='buyNFT(${JSON.stringify(n).replace(/'/g, "\\'")})'>Buy</button></div>
+                <div class="card-footer">
+                    <span class="price">$${n.price}</span>
+                    <button class="btn-buy" onclick="event.stopPropagation(); buyNFT(${n.id})">Buy</button>
+                </div>
             </div>
         `).join('');
     }
@@ -335,11 +344,11 @@
         const container = document.getElementById('myNftsGrid');
         if (!container) return;
         if (myNFTs.length === 0) {
-            container.innerHTML = '<div class="empty-state">✨ У вас пока нет NFT</div>';
+            container.innerHTML = '<div style="text-align:center; padding:50px;">✨ У вас пока нет NFT</div>';
             return;
         }
         container.innerHTML = myNFTs.map(n => `
-            <div class="nft-card">
+            <div class="nft-card" onclick="openDetail(${n.id})">
                 <div class="card-header"><div class="user-info"><div class="avatar">⚪</div><span class="user-name">${n.creator}</span></div><div class="likes">0</div></div>
                 <div class="card-img" style="background-image: url('${n.img}')"></div>
                 <div class="collection-label">COLLECTION NAME</div>
@@ -349,30 +358,130 @@
         `).join('');
     }
 
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) searchInput.addEventListener('input', (e) => renderNFTs(e.target.value));
-
-    function buyNFT(nft) {
-        if (!currentUser) { alert('Сначала войдите в аккаунт!'); showPage('login'); return; }
-        myNFTs.push({ ...nft, creator: currentUser.name });
-        renderMyNFTs();
-        showCongrats(); // ПОЗДРАВЛЕНИЕ
-    }
-
+    // ========== СОЗДАНИЕ NFT (ДОБАВЛЯЕТСЯ В ГЛАВНУЮ СТРАНИЦУ) ==========
     function createNFT() {
         if (!currentUser) { alert('Войдите в аккаунт!'); showPage('login'); return; }
         const name = document.getElementById('nftName').value;
         const price = document.getElementById('nftPrice').value;
         const img = document.getElementById('nftImage').value;
+        const desc = document.getElementById('nftDescription').value;
         if (!name || !price || !img) { alert('Заполните название, цену и ссылку на изображение!'); return; }
-        myNFTs.push({ creator: currentUser.name, title: name, price: price, img: img, likes: 0 });
-        alert('✅ NFT создан!');
+        
+        const newNFT = {
+            id: nextId++,
+            creator: currentUser.name,
+            likes: 0,
+            title: name,
+            price: price,
+            img: img,
+            description: desc || "Новый NFT, созданный пользователем."
+        };
+        
+        allNFTs.unshift(newNFT);  // Добавляем в НАЧАЛО списка (самый свежий)
+        comments[newNFT.id] = [];
+        saveNFTsToLocal();
+        
+        // Добавляем в "Мои NFT"
+        myNFTs.push({ ...newNFT, creator: currentUser.name });
+        
+        alert('✅ NFT создан и появился на главной странице!');
         document.getElementById('nftName').value = '';
         document.getElementById('nftPrice').value = '';
         document.getElementById('nftImage').value = '';
+        document.getElementById('nftDescription').value = '';
+        
+        renderNFTs();
         renderMyNFTs();
+        showPage('nfts');
     }
 
+    // ========== ДЕТАЛЬНАЯ СТРАНИЦА ==========
+    function openDetail(nftId) {
+        const nft = allNFTs.find(n => n.id === nftId);
+        if (!nft) return;
+        
+        const moreByCreator = allNFTs.filter(n => n.creator === nft.creator && n.id !== nft.id).slice(0, 3);
+        const isOwned = myNFTs.some(n => n.id === nft.id);
+        
+        const container = document.getElementById('detailContainer');
+        container.innerHTML = `
+            <div class="detail-header">
+                <div class="detail-img" style="background-image: url('${nft.img}')"></div>
+                <div class="detail-info">
+                    <div class="detail-creator">
+                        <div class="avatar">⚪</div>
+                        <span style="font-weight:600;">${nft.creator}</span>
+                        <div class="likes">${nft.likes}</div>
+                    </div>
+                    <div class="detail-title">${nft.title}</div>
+                    <div class="detail-description">${nft.description}</div>
+                    <div class="detail-price">$${nft.price}</div>
+                    ${isOwned ? '<div class="owner-badge">✔ Вы владеете этим NFT</div>' : `<button class="btn-buy" onclick="buyNFT(${nft.id})">Купить сейчас</button>`}
+                </div>
+            </div>
+            <div class="more-by">
+                <h3 style="color:#24ffa4;">More by ${nft.creator}</h3>
+                <div class="more-grid">
+                    ${moreByCreator.map(n => `
+                        <div class="more-card" onclick="openDetail(${n.id})">
+                            <div class="more-card-img" style="background-image: url('${n.img}')"></div>
+                            <div style="font-weight:600;">${n.title}</div>
+                            <div style="color:#24ffa4;">$${n.price}</div>
+                        </div>
+                    `).join('')}
+                    ${moreByCreator.length === 0 ? '<div style="color:#6b7c8f;">Нет других работ этого автора</div>' : ''}
+                </div>
+            </div>
+            <div class="comments-section">
+                <div class="comments-title">💬 Комментарии (${comments[nft.id]?.length || 0})</div>
+                <div class="comment-input">
+                    <input type="text" id="commentText" placeholder="Напишите ваше мнение...">
+                    <button onclick="addComment(${nft.id})">Отправить</button>
+                </div>
+                <div id="commentsList">
+                    ${renderComments(nft.id)}
+                </div>
+            </div>
+        `;
+        showPage('detail');
+    }
+
+    function renderComments(nftId) {
+        const commentList = comments[nftId] || [];
+        if (commentList.length === 0) return '<div class="no-comments">Комментариев пока нет. Будьте первым!</div>';
+        return commentList.map(c => `<div class="comment"><div class="comment-author">${c.author}</div><div class="comment-text">${c.text}</div></div>`).join('');
+    }
+
+    function addComment(nftId) {
+        if (!currentUser) { alert('Сначала войдите в аккаунт!'); showPage('login'); return; }
+        const input = document.getElementById('commentText');
+        const text = input.value.trim();
+        if (!text) { alert('Введите комментарий!'); return; }
+        if (!comments[nftId]) comments[nftId] = [];
+        comments[nftId].push({ author: currentUser.name, text: text });
+        saveNFTsToLocal();
+        input.value = '';
+        const commentsList = document.getElementById('commentsList');
+        if (commentsList) commentsList.innerHTML = renderComments(nftId);
+        const title = document.querySelector('.comments-section .comments-title');
+        if (title) title.innerHTML = `💬 Комментарии (${comments[nftId].length})`;
+    }
+
+    // ========== ПОКУПКА ==========
+    function buyNFT(nftId) {
+        if (!currentUser) { alert('Сначала войдите в аккаунт!'); showPage('login'); return; }
+        const nft = allNFTs.find(n => n.id === nftId);
+        if (!nft) return;
+        if (!myNFTs.some(n => n.id === nftId)) {
+            myNFTs.push({ ...nft, creator: currentUser.name });
+            renderMyNFTs();
+        }
+        document.getElementById('congratsModal').style.display = 'flex';
+        setTimeout(() => closeModal(), 3000);
+    }
+    function closeModal() { document.getElementById('congratsModal').style.display = 'none'; }
+
+    // ========== РЕГИСТРАЦИЯ ==========
     function showRegister() {
         document.getElementById('loginForm').style.display = 'none';
         document.getElementById('registerForm').style.display = 'block';
@@ -427,14 +536,24 @@
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.getElementById(pageId).classList.add('active-page');
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        if (event && event.target) event.target.classList.add('active');
         if (pageId === 'my-nfts') renderMyNFTs();
         if (pageId === 'nfts') renderNFTs();
     }
 
-    const saved = localStorage.getItem('nft_user');
-    if (saved) { currentUser = JSON.parse(saved); updateProfileForm(); }
+    // Поиск
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.addEventListener('input', (e) => renderNFTs(e.target.value));
+
+    // Загрузка сохраненных данных
+    loadNFTsFromLocal();
+    const savedUser = localStorage.getItem('nft_user');
+    if (savedUser) { currentUser = JSON.parse(savedUser); updateProfileForm(); }
+    const savedMyNFTs = localStorage.getItem('my_nfts');
+    if (savedMyNFTs) myNFTs = JSON.parse(savedMyNFTs);
+    
     renderNFTs();
+    renderMyNFTs();
 </script>
 </body>
 </html>
