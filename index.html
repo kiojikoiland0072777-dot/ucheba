@@ -108,6 +108,13 @@
             font-size: 18px;
             font-weight: 700;
             color: #24ffa4;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .user-name { font-weight: 600; font-size: 15px; }
         .likes {
@@ -185,6 +192,47 @@
         .page { display: none; animation: fade 0.2s ease; }
         .page.active-page { display: block; }
         @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Профиль с аватаркой */
+        .profile-avatar {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .avatar-large {
+            width: 100px;
+            height: 100px;
+            background: #202731;
+            border: 2px solid #24ffa4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+        .avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .avatar-large .avatar-placeholder {
+            font-size: 40px;
+            color: #24ffa4;
+        }
+        .avatar-upload-btn {
+            background: rgba(36,255,164,0.1);
+            border: 1px solid #24ffa4;
+            padding: 8px 20px;
+            border-radius: 30px;
+            color: #24ffa4;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
         @media (max-width: 700px) {
             .navbar { padding: 12px 20px; }
             .nav-btn { padding: 6px 12px; font-size: 12px; }
@@ -249,10 +297,21 @@
         </div>
     </div>
 
-    <!-- PROFILE -->
+    <!-- PROFILE (с аватаркой) -->
     <div id="profile" class="page">
         <h2 style="color:#24ffa4;">Редактировать профиль</h2>
         <div style="max-width:500px; background:#11161f; border:2px solid #232a33; padding:30px; margin-top:20px;">
+            <div class="profile-avatar">
+                <div class="avatar-large" id="avatarPreview" onclick="document.getElementById('avatarInput').click()">
+                    <div class="avatar-placeholder" id="avatarPlaceholder">📷</div>
+                    <img id="avatarImage" style="display:none;" alt="avatar">
+                </div>
+                <div>
+                    <div class="avatar-upload-btn" onclick="document.getElementById('avatarInput').click()">Загрузить фото</div>
+                    <p style="font-size:12px; color:#6b7c8f; margin-top:8px;">Нажмите на круг, чтобы загрузить фото</p>
+                </div>
+                <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+            </div>
             <div class="form-group"><label>Имя</label><input type="text" id="profileName" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
             <div class="form-group"><label>Email</label><input type="email" id="profileEmail" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></div>
             <div class="form-group"><label>О себе</label><textarea rows="3" id="profileBio" style="width:100%; background:#0f131c; border:2px solid #2a333d; padding:12px;"></textarea></div>
@@ -294,16 +353,13 @@
     let currentUser = null;
     let nextId = 5;
 
-    // Инициализация комментариев
     allNFTs.forEach(nft => { if (!comments[nft.id]) comments[nft.id] = []; });
 
-    // Сохранение NFT в localStorage
     function saveNFTsToLocal() {
         localStorage.setItem('all_nfts', JSON.stringify(allNFTs));
         localStorage.setItem('comments', JSON.stringify(comments));
     }
 
-    // Загрузка NFT из localStorage
     function loadNFTsFromLocal() {
         const saved = localStorage.getItem('all_nfts');
         if (saved) {
@@ -318,7 +374,49 @@
         }
     }
 
-    // ========== ОТОБРАЖЕНИЕ ГЛАВНОЙ СТРАНИЦЫ ==========
+    // ========== АВАТАРДЫ ЖҮКТЕУ ==========
+    function uploadAvatar(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const avatarData = e.target.result;
+                if (currentUser) {
+                    currentUser.avatar = avatarData;
+                    localStorage.setItem('nft_user', JSON.stringify(currentUser));
+                    updateProfileForm();
+                    updateAvatarInNavbar();
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function updateProfileForm() {
+        if (currentUser) {
+            document.getElementById('profileName').value = currentUser.name || '';
+            document.getElementById('profileEmail').value = currentUser.email || '';
+            document.getElementById('profileBio').value = currentUser.bio || '';
+            const avatarImg = document.getElementById('avatarImage');
+            const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+            if (currentUser.avatar) {
+                avatarImg.src = currentUser.avatar;
+                avatarImg.style.display = 'block';
+                avatarPlaceholder.style.display = 'none';
+            } else {
+                avatarImg.style.display = 'none';
+                avatarPlaceholder.style.display = 'flex';
+            }
+        }
+    }
+
+    function updateAvatarInNavbar() {
+        // Обновляем аватар в навигации, если нужно
+        const navAvatar = document.querySelector('.navbar .user-avatar');
+        if (navAvatar && currentUser && currentUser.avatar) {
+            navAvatar.src = currentUser.avatar;
+        }
+    }
+
     function renderNFTs(filter = "") {
         const container = document.getElementById('nftGrid');
         if (!container) return;
@@ -358,7 +456,6 @@
         `).join('');
     }
 
-    // ========== СОЗДАНИЕ NFT (ДОБАВЛЯЕТСЯ В ГЛАВНУЮ СТРАНИЦУ) ==========
     function createNFT() {
         if (!currentUser) { alert('Войдите в аккаунт!'); showPage('login'); return; }
         const name = document.getElementById('nftName').value;
@@ -377,11 +474,10 @@
             description: desc || "Новый NFT, созданный пользователем."
         };
         
-        allNFTs.unshift(newNFT);  // Добавляем в НАЧАЛО списка (самый свежий)
+        allNFTs.unshift(newNFT);
         comments[newNFT.id] = [];
         saveNFTsToLocal();
         
-        // Добавляем в "Мои NFT"
         myNFTs.push({ ...newNFT, creator: currentUser.name });
         
         alert('✅ NFT создан и появился на главной странице!');
@@ -395,7 +491,6 @@
         showPage('nfts');
     }
 
-    // ========== ДЕТАЛЬНАЯ СТРАНИЦА ==========
     function openDetail(nftId) {
         const nft = allNFTs.find(n => n.id === nftId);
         if (!nft) return;
@@ -467,7 +562,6 @@
         if (title) title.innerHTML = `💬 Комментарии (${comments[nftId].length})`;
     }
 
-    // ========== ПОКУПКА ==========
     function buyNFT(nftId) {
         if (!currentUser) { alert('Сначала войдите в аккаунт!'); showPage('login'); return; }
         const nft = allNFTs.find(n => n.id === nftId);
@@ -481,7 +575,6 @@
     }
     function closeModal() { document.getElementById('congratsModal').style.display = 'none'; }
 
-    // ========== РЕГИСТРАЦИЯ ==========
     function showRegister() {
         document.getElementById('loginForm').style.display = 'none';
         document.getElementById('registerForm').style.display = 'block';
@@ -496,7 +589,7 @@
         const pass = document.getElementById('regPassword').value;
         if (!name || !email || !pass) { alert('Заполните все поля!'); return; }
         if (pass.length < 4) { alert('Пароль минимум 4 символа'); return; }
-        const user = { name, email, password: pass };
+        const user = { name, email, password: pass, bio: "" };
         localStorage.setItem('nft_user', JSON.stringify(user));
         currentUser = user;
         alert('✅ Регистрация успешна!');
@@ -516,13 +609,6 @@
             showPage('profile');
         } else { alert('Неверное имя или пароль'); }
     }
-    function updateProfileForm() {
-        if (currentUser) {
-            document.getElementById('profileName').value = currentUser.name || '';
-            document.getElementById('profileEmail').value = currentUser.email || '';
-            document.getElementById('profileBio').value = currentUser.bio || '';
-        }
-    }
     function saveProfile() {
         if (!currentUser) { alert('Войдите в аккаунт!'); showPage('login'); return; }
         currentUser.name = document.getElementById('profileName').value;
@@ -541,11 +627,9 @@
         if (pageId === 'nfts') renderNFTs();
     }
 
-    // Поиск
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.addEventListener('input', (e) => renderNFTs(e.target.value));
 
-    // Загрузка сохраненных данных
     loadNFTsFromLocal();
     const savedUser = localStorage.getItem('nft_user');
     if (savedUser) { currentUser = JSON.parse(savedUser); updateProfileForm(); }
